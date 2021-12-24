@@ -1,18 +1,13 @@
 
 <?php
     require "../functions.php";
-    // Ubah jadi ambil yang aktif saja
-    $akun = ambil("SELECT * FROM user WHERE jabatan = 'pengguna' AND (status = 'online' OR status = 'bayar') AND pesanan != 'Belum Memesan'");
+  
 
-    // Pagination
-    $jumlahData = count(ambil("SELECT * FROM user"));
-    var_dump($jumlahData);
-    $jumlahTampil = 5;
-    $jumlahHalaman = ceil($jumlahData/$jumlahTampil);
-    $halamanAktif = (isset($_GET['halaman'])) ? $_GET['halaman'] : 1;
-    $offsetnya = ($halamanAktif - 1) * $jumlahTampil;
-    $akun_online = ambil("SELECT * FROM user WHERE jabatan != 'admin' ORDER BY STATUS DESC LIMIT $offsetnya, $jumlahTampil");
+    $akun = ambil("SELECT * FROM user WHERE jabatan = 'pengguna' AND (status = 'online' OR status = 'bayar') AND pesanan != 'Belum Memesan'");
+    $akun_online = ambil("SELECT * FROM user WHERE jabatan != 'admin' ORDER BY STATUS DESC");
     $transaksinya = ambil("SELECT * FROM transaksi WHERE total != 0 ORDER BY id DESC");
+
+//     Paginationnya ditambahin ya Murr
 
 
 
@@ -216,44 +211,6 @@
                                             <?php endforeach; ?>
                                         </table>
                                     </div>
-                                    <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <?php if($halamanAktif >= 2): ?>
-        <li class="page-item">
-        <a class="page-link" href="?halaman=<?= $halamanAktif - 1; ?>" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-        </a>
-        </li>
-    <?php else: ?>
-        <li class="page-item disabled">
-            <a class="page-link" href="?halaman=<?= $halamanAktif - 1; ?>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-    <?php endif; ?>
-    <?php for($i = 1; $i <= $jumlahHalaman; $i++): ?> 
-        <?php if($i == $halamanAktif): ?>
-            <li class="page-item"><a style="background-color: #4d4dd8f7;color: whitesmoke;" class="page-link" href="?halaman=<?= $i; ?>"><?= $i; ?></a></li>
-        <?php else: ?>
-            <li class="page-item"><a class="page-link" href="?halaman=<?= $i; ?>"><?= $i; ?></a></li>
-        <?php endif; ?>
-    <?php endfor; ?>
-    
-    <?php if($halamanAktif < $jumlahHalaman): ?>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-    <?php else : ?>
-        <li class="page-item disabled">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    <?php endif; ?>
-  </ul>
-</nav>
                                 </div>
                             </div>
                         </div>
